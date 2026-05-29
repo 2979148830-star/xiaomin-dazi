@@ -1,0 +1,47 @@
+<view class="page-shell">
+  <view class="section-card feedback-hero">
+    <view class="section-kicker">问题反馈</view>
+    <view class="section-title">哪里不顺手，直接告诉我们</view>
+    <view class="section-desc">显示错位、发布失败、想加功能都可以写在这里。我们会把反馈保存下来，后面集中优化。</view>
+  </view>
+
+  <view class="section-card">
+    <view class="field-label">反馈类型</view>
+    <picker range="{{typeOptions}}" value="{{typeIndex}}" bindchange="onTypeChange">
+      <view class="field-picker">{{typeOptions[typeIndex]}}</view>
+    </picker>
+
+    <view class="divider"></view>
+
+    <view class="field-label">具体问题</view>
+    <textarea
+      class="feedback-textarea"
+      maxlength="300"
+      value="{{form.content}}"
+      placeholder="比如：发布页联系电话输入框文字被挡住；或者希望增加某个搭子类型..."
+      bindinput="onContentInput"
+    />
+    <view class="textarea-count">{{contentLength}} / 300</view>
+
+    <view class="divider"></view>
+
+    <view class="field-label">联系方式（选填）</view>
+    <input
+      class="field-input"
+      maxlength="60"
+      value="{{form.contact}}"
+      placeholder="微信、电话或邮箱都可以，方便我们追问细节"
+      bindinput="onContactInput"
+    />
+  </view>
+
+  <view class="section-card tip-card">
+    <view class="tip-title">反馈小提示</view>
+    <view class="tip-line">如果是页面错位，可以写清楚在哪个页面、点了什么之后出现。</view>
+    <view class="tip-line">如果是发布或加入失败，把提示文字也一起写上，排查会快很多。</view>
+  </view>
+
+  <button class="primary-btn submit-btn" bindtap="submitFeedback" loading="{{submitting}}">
+    提交反馈
+  </button>
+</view>

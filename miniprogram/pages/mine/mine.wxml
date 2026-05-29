@@ -1,0 +1,136 @@
+<view class="page-shell">
+  <view class="hero-card">
+    <navigator class="hero-profile-link" url="/pkg-mine/profile/profile" hover-class="card-hover">
+      <view class="hero-top">
+        <view class="hero-avatar-wrap">
+          <image wx:if="{{userInfo.avatar}}" class="hero-avatar" src="{{userInfo.avatar}}" mode="aspectFill"></image>
+          <view wx:else class="hero-avatar placeholder-avatar">{{userInfo.avatarText}}</view>
+        </view>
+
+        <view class="hero-main">
+          <view class="hero-kicker">我的校园搭子名片</view>
+          <view class="hero-name">{{userInfo.nickname || '先去完善你的昵称'}}</view>
+          <view class="hero-tagline-row">
+            <text class="hero-tagline">{{myTag}}</text>
+            <text class="hero-chip mbti inline-chip" wx:if="{{myMbti && myMbti !== '???'}}">{{myMbti}}</text>
+            <text class="hero-chip gender-chip inline-chip" wx:if="{{userInfo.gender}}">{{userInfo.gender}}</text>
+          </view>
+        </view>
+
+        <view class="hero-edit">{{userInfo.isProfileReady ? '编辑 >' : '完善 >'}}</view>
+      </view>
+
+      <view class="hobby-panel">
+        <view class="hobby-panel-head">
+          <text class="hobby-title">爱好光谱</text>
+          <text class="hobby-tip">{{userInfo.hobbyTags.length ? '会展示在你发起的邀约里' : '让同学更快找到共同话题'}}</text>
+        </view>
+        <view class="hobby-cloud" wx:if="{{userInfo.hobbyTags.length}}">
+          <text class="hobby-chip" wx:for="{{userInfo.hobbyTags}}" wx:key="*this">{{item}}</text>
+        </view>
+        <view class="hobby-empty" wx:else>还没写爱好，点这里补几枚你的兴趣标签。</view>
+      </view>
+    </navigator>
+
+    <view class="hero-stats">
+      <navigator class="stat-card" url="/pkg-mine/orders/orders?tab=published" hover-class="card-hover">
+        <text class="stat-value">{{publishedCount}}</text>
+        <text class="stat-label">发布</text>
+      </navigator>
+      <navigator class="stat-card" url="/pkg-mine/orders/orders?tab=joined" hover-class="card-hover">
+        <text class="stat-value">{{joinedCount}}</text>
+        <text class="stat-label">加入</text>
+      </navigator>
+      <navigator class="stat-card" url="/pkg-mine/notifications/notifications" hover-class="card-hover">
+        <text class="stat-value message">{{unreadCount}}</text>
+        <text class="stat-label">消息</text>
+      </navigator>
+      <navigator class="stat-card" url="/pkg-mine/notifications/notifications" hover-class="card-hover">
+        <text class="stat-value status">{{notifyStatusText}}</text>
+        <text class="stat-label">提醒</text>
+      </navigator>
+    </view>
+  </view>
+
+  <view class="quick-row">
+    <navigator class="quick-pill primary" url="/pages/publish/publish" open-type="switchTab" hover-class="card-hover">去发布</navigator>
+    <navigator class="quick-pill secondary" url="/pages/index/index" open-type="switchTab" hover-class="card-hover">逛广场</navigator>
+  </view>
+
+  <view class="section-head">
+    <view class="section-title">常用功能</view>
+  </view>
+
+  <navigator class="nav-card" url="/pkg-mine/profile/profile" hover-class="card-hover">
+    <view class="nav-icon profile">
+      <view class="mini-icon icon-profile"></view>
+    </view>
+    <view class="nav-main">
+      <view class="nav-title">个人信息</view>
+      <view class="nav-desc">头像、昵称、性别、爱好和搭子画像</view>
+    </view>
+    <view class="nav-side">
+      <text class="nav-meta">编辑</text>
+      <text class="nav-arrow">></text>
+    </view>
+  </navigator>
+
+  <navigator class="nav-card" url="/pkg-mine/orders/orders?tab=published" hover-class="card-hover">
+    <view class="nav-icon orders">
+      <view class="mini-icon icon-orders"></view>
+    </view>
+    <view class="nav-main">
+      <view class="nav-title">搭子订单</view>
+      <view class="nav-desc">我发布的和我加入的帖子都放在这里</view>
+    </view>
+    <view class="nav-side">
+      <text class="nav-meta">{{publishedCount}} 发布 · {{joinedCount}} 加入</text>
+      <text class="nav-arrow">></text>
+    </view>
+  </navigator>
+
+  <navigator class="nav-card" url="/pkg-mine/notifications/notifications" hover-class="card-hover">
+    <view class="nav-icon notify {{unreadCount ? 'has-unread' : ''}}">
+      <view class="mini-icon icon-notify"></view>
+    </view>
+    <view class="nav-main">
+      <view class="nav-title-row">
+        <view class="nav-title">消息提醒</view>
+        <text class="nav-badge" wx:if="{{unreadCount}}">{{unreadCount}}</text>
+      </view>
+      <view class="nav-desc">聊天消息、删除通知和加入提醒都在这里</view>
+    </view>
+    <view class="nav-side">
+      <text class="nav-meta">{{messageStatusText}}</text>
+      <text class="nav-arrow">></text>
+    </view>
+  </navigator>
+
+  <navigator class="nav-card" url="/pkg-mine/feedback/feedback" hover-class="card-hover">
+    <view class="nav-icon feedback">
+      <view class="mini-icon icon-feedback"></view>
+    </view>
+    <view class="nav-main">
+      <view class="nav-title">问题反馈</view>
+      <view class="nav-desc">遇到卡顿、显示异常或想加新功能，都可以直接告诉我们</view>
+    </view>
+    <view class="nav-side">
+      <text class="nav-meta">去反馈</text>
+      <text class="nav-arrow">></text>
+    </view>
+  </navigator>
+
+  <navigator class="nav-card" url="/pkg-mine/settings/settings" hover-class="card-hover">
+    <view class="nav-icon settings">
+      <view class="mini-icon icon-settings"></view>
+    </view>
+    <view class="nav-main">
+      <view class="nav-title">其他设置</view>
+      <view class="nav-desc">重新测画像、查看隐私说明和项目说明</view>
+    </view>
+    <view class="nav-side">
+      <text class="nav-meta">工具</text>
+      <text class="nav-arrow">></text>
+    </view>
+  </navigator>
+</view>

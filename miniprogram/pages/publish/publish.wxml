@@ -1,0 +1,156 @@
+<view class="page-container">
+  <block wx:if="{{!isFinished}}">
+    <view class="progress-header">
+      <view class="progress-text">8 个校园小问题，选出你的搭子磁场</view>
+      <view class="progress-bar">{{currentIndex + 1}} / {{questions.length}}</view>
+      <view class="progress-dots">
+        <view
+          class="progress-dot {{index === currentIndex ? 'active' : (index < currentIndex ? 'done' : '')}}"
+          wx:for="{{questions}}"
+          wx:key="title"
+        ></view>
+      </view>
+    </view>
+
+    <view class="question-card">
+      <view class="question-helper">选一个最像你现在状态的答案</view>
+      <view class="q-title">{{questions[currentIndex].title}}</view>
+      <view
+        class="option-btn"
+        wx:for="{{questions[currentIndex].options}}"
+        wx:key="label"
+        bindtap="chooseOption"
+        data-type="{{item.type}}"
+        data-tag="{{item.tag}}"
+      >
+        <view class="option-main">
+          <text class="option-emoji">{{item.emoji}}</text>
+          <text class="option-label">{{item.label}}</text>
+        </view>
+        <text class="option-tag">{{item.tag}}</text>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="result-card">
+      <view class="result-header">
+        <view class="result-title">你的校园搭子画像</view>
+        <view class="result-tag">{{finalTag}}</view>
+        <view class="result-mbti">{{mbtiResult}} 型搭子能量</view>
+        <view class="persona-tags" wx:if="{{selectedAnswerTags.length}}">
+          <view class="persona-tag" wx:for="{{selectedAnswerTags}}" wx:for-item="tag" wx:key="*this">{{tag}}</view>
+        </view>
+        <button class="retake-btn" bindtap="restartQuiz">重新测一遍</button>
+      </view>
+
+      <view class="publish-form">
+        <view class="section-title">{{draftMode === 'edit' ? '编辑校园邀约' : '发布新的校园邀约'}}</view>
+
+        <view id="field-type" class="form-item {{fieldErrors.type ? 'has-error' : ''}}">
+          <text class="item-label">搭子类型</text>
+          <picker bindchange="onTypeChange" range="{{typeOptions}}" range-key="label">
+            <view class="picker-box {{formData.type ? 'selected' : ''}}">
+              {{formData.type || '点击选择类型 >'}}
+            </view>
+          </picker>
+          <view class="field-error" wx:if="{{fieldErrors.type}}">{{fieldErrors.type}}</view>
+        </view>
+
+        <view id="field-customType" class="form-item {{fieldErrors.customType ? 'has-error' : ''}}" wx:if="{{formData.type === '其他'}}">
+          <text class="item-label">其他类型名称</text>
+          <input
+            class="input-box"
+            placeholder="例如：拍照、看展、逛集市"
+            value="{{formData.customType}}"
+            bindinput="onInputChange"
+            data-field="customType"
+          />
+          <view class="field-error" wx:if="{{fieldErrors.customType}}">{{fieldErrors.customType}}</view>
+        </view>
+
+        <view id="field-date" class="form-item {{fieldErrors.date ? 'has-error' : ''}}">
+          <text class="item-label">约在几月几号</text>
+          <picker mode="date" start="{{dateRange.start}}" end="{{dateRange.end}}" bindchange="onDateChange">
+            <view class="picker-box {{formData.date ? 'selected' : ''}}">
+              {{formData.date || '今天、明天或以后都可以选 >'}}
+            </view>
+          </picker>
+          <view class="field-error" wx:if="{{fieldErrors.date}}">{{fieldErrors.date}}</view>
+        </view>
+
+        <view id="field-time" class="form-item {{fieldErrors.time ? 'has-error' : ''}}">
+          <text class="item-label">具体几点几分</text>
+          <picker mode="time" bindchange="onTimeChange">
+            <view class="picker-box {{formData.time ? 'selected' : ''}}">
+              {{formData.time || '点击选择时间 >'}}
+            </view>
+          </picker>
+          <view class="field-error" wx:if="{{fieldErrors.time}}">{{fieldErrors.time}}</view>
+        </view>
+
+        <view id="field-location" class="form-item {{fieldErrors.location ? 'has-error' : ''}}">
+          <text class="item-label">约的地方</text>
+          <input
+            class="input-box"
+            placeholder="例如：图书馆三楼、操场东看台"
+            value="{{formData.location}}"
+            bindinput="onInputChange"
+            data-field="location"
+          />
+          <view class="field-error" wx:if="{{fieldErrors.location}}">{{fieldErrors.location}}</view>
+        </view>
+
+        <view id="field-gender" class="form-item {{fieldErrors.gender ? 'has-error' : ''}}">
+          <text class="item-label">性别要求</text>
+          <picker bindchange="onGenderChange" range="{{['男生', '女生', '男女都行']}}">
+            <view class="picker-box {{formData.gender ? 'selected' : ''}}">
+              {{formData.gender || '点击选择性别 >'}}
+            </view>
+          </picker>
+          <view class="field-error" wx:if="{{fieldErrors.gender}}">{{fieldErrors.gender}}</view>
+        </view>
+
+        <view id="field-total_people" class="form-item {{fieldErrors.total_people ? 'has-error' : ''}}">
+          <text class="item-label">需要几个人</text>
+          <picker bindchange="onPeopleChange" range="{{peopleOptions}}" range-key="label">
+            <view class="picker-box {{formData.total_people ? 'selected' : ''}}">
+              {{formData.total_people_label || '点击选择人数 >'}}
+            </view>
+          </picker>
+          <view class="field-error" wx:if="{{fieldErrors.total_people}}">{{fieldErrors.total_people}}</view>
+        </view>
+
+        <view id="field-phone" class="form-item {{fieldErrors.phone ? 'has-error' : ''}}">
+          <text class="item-label">联系电话</text>
+          <input
+            class="input-box"
+            type="number"
+            maxlength="11"
+            placeholder="仅上车成功后展示"
+            value="{{formData.phone}}"
+            bindinput="onInputChange"
+            data-field="phone"
+          />
+          <view class="field-error" wx:if="{{fieldErrors.phone}}">{{fieldErrors.phone}}</view>
+        </view>
+
+        <view class="form-item">
+          <text class="item-label">备注</text>
+          <textarea
+            class="textarea-box"
+            placeholder="写下你对这次邀约的期待..."
+            value="{{formData.note}}"
+            bindinput="onInputChange"
+            data-field="note"
+          />
+        </view>
+
+        <view class="form-actions">
+          <button class="edit-back-btn" wx:if="{{draftMode === 'edit'}}" bindtap="backToEditDetail">返回详情</button>
+          <button class="submit-btn" bindtap="submitPost">{{draftMode === 'edit' ? '保存修改' : '正式发布到广场'}}</button>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

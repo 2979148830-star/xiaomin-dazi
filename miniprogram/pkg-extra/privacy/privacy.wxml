@@ -1,0 +1,99 @@
+<!-- pages/privacy/privacy.wxml -->
+<view class="privacy-page">
+  <view class="privacy-content">
+    <view class="header">
+      <view class="title">小民搭子用户隐私保护指引</view>
+      <view class="version">最后更新：2026年</view>
+    </view>
+
+    <scroll-view class="content-scroll">
+      <view class="section">
+        <view class="section-title">1. 隐私收集说明</view>
+        <view class="text">
+          小民搭子面向中央民族大学同学提供搭子发布与加入服务。我们收集的信息包括：
+          <view class="item">
+            <text>• 微信昵称（用于展示）</text>
+          </view>
+          <view class="item">
+            <text>• 微信头像（用于展示）</text>
+          </view>
+          <view class="item">
+            <text>• 微信 OpenID（用于用户识别）</text>
+          </view>
+          <view class="item">
+            <text>• 性别和爱好（用于资料展示和搭子匹配）</text>
+          </view>
+          <view class="item">
+            <text>• 发布的搭子信息（用于广场展示）</text>
+          </view>
+          <view class="item">
+            <text>• 联系电话（仅向发起人和已上车用户展示）</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-title">2. 信息使用目的</view>
+        <view class="text">
+          我们将收集的信息用于：
+          <view class="item">
+            <text>• 帮助你找到志趣相投的搭子</text>
+          </view>
+          <view class="item">
+            <text>• 展示搭子信息到广场页面</text>
+          </view>
+          <view class="item">
+            <text>• 匹配 MBTI 类型相似的用户</text>
+          </view>
+          <view class="item">
+            <text>• 识别帖子发布者和已上车用户</text>
+          </view>
+          <view class="item">
+            <text>• 提供更好的用户体验</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-title">3. 数据安全</view>
+        <view class="text">
+          <view class="item">
+            <text>• 所有数据存储在微信云开发安全环境中</text>
+          </view>
+          <view class="item">
+            <text>• 联系电话不会在广场公开展示</text>
+          </view>
+          <view class="item">
+            <text>• 不会出售或共享您的个人信息</text>
+          </view>
+          <view class="item">
+            <text>• 我们会采取必要的技术措施保护您的数据安全</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-title">4. 权限说明</view>
+        <view class="text">
+          <view class="item">
+            <text>• 头像选择：使用微信原生头像选择功能</text>
+          </view>
+          <view class="item">
+            <text>• 昵称获取：使用微信原生昵称输入功能</text>
+          </view>
+          <view class="item">
+            <text>• 联系方式：发布搭子时由用户手动输入电话号码</text>
+          </view>
+          <view class="item">
+            <text>• 数据存储：使用微信云开发服务</text>
+          </view>
+        </view>
+      </view>
+
+    </scroll-view>
+
+    <view class="footer">
+      <button class="agree-btn" bindtap="onAgree">我已阅读并同意</button>
+    </view>
+  </view>
+</view>

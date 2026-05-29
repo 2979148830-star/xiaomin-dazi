@@ -1,0 +1,74 @@
+@import "../common.wxss";
+
+.feedback-hero {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 30%),
+    linear-gradient(135deg, #eef4ff 0%, #f4edff 54%, #e9f8f3 100%);
+}
+
+.field-label {
+  font-size: 26rpx;
+  color: #667482;
+  margin-bottom: 14rpx;
+}
+
+.field-input,
+.field-picker,
+.feedback-textarea {
+  width: 100%;
+  border-radius: 22rpx;
+  border: 2rpx solid rgba(223, 227, 255, 0.82);
+  background: rgba(255, 255, 255, 0.58);
+  box-sizing: border-box;
+  font-size: 28rpx;
+  color: #243140;
+}
+
+.field-input,
+.field-picker {
+  height: 92rpx;
+  line-height: 92rpx;
+  padding: 0 24rpx;
+}
+
+.field-picker {
+  color: #243140;
+}
+
+.feedback-textarea {
+  height: 240rpx;
+  padding: 24rpx;
+  line-height: 1.6;
+}
+
+.textarea-count {
+  margin-top: 10rpx;
+  text-align: right;
+  color: #9aa6b2;
+  font-size: 22rpx;
+}
+
+.divider {
+  height: 26rpx;
+}
+
+.tip-card {
+  background: rgba(255, 248, 239, 0.96);
+}
+
+.tip-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #4a3328;
+}
+
+.tip-line {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #7b6b61;
+}
+
+.submit-btn {
+  margin-top: 8rpx;
+}

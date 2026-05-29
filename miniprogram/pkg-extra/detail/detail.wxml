@@ -1,0 +1,149 @@
+<view class="container" wx:if="{{postDetail}}">
+  <view class="user-header">
+    <view class="user-main">
+      <view class="user-title-line">
+        <view class="user-name">{{postDetail.creator_name || '民大同学'}}</view>
+        <view class="tag-persona" wx:if="{{postDetail.creator_tag}}">
+          {{postDetail.creator_tag}}
+        </view>
+      </view>
+
+      <view class="user-tags-container">
+        <view class="tag-gender {{postDetail.creator_gender === '男生' ? 'male' : (postDetail.creator_gender === '女生' ? 'female' : 'secret')}}">
+          <text>{{postDetail.creator_gender}}</text>
+        </view>
+        
+        <view
+          class="tag-hobbies"
+          wx:for="{{postDetail.creatorHobbyTags}}"
+          wx:for-item="hobby"
+          wx:key="*this"
+        >
+          {{hobby}}
+        </view>
+      </view>
+
+      <view class="answer-tags" wx:if="{{postDetail.creator_answer_tags.length}}">
+        <text class="answer-tag" wx:for="{{postDetail.creator_answer_tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="info-card">
+    <view class="card-title-row">
+      <view class="card-title-main">
+        <view class="card-title">{{postDetail.type}}</view>
+        <view class="requirement-inline title-requirement-inline">
+          <text class="req-inline-label">招募要求</text>
+          <text class="req-inline-value">{{postDetail.gender}}</text>
+        </view>
+      </view>
+      <view class="status-badge {{isFull ? 'full' : 'open'}}">{{postDetail.statusText}}</view>
+    </view>
+
+    <view class="full-banner" wx:if="{{isFull && !isCreator}}">
+      来晚了，这条邀约已经满员啦
+    </view>
+
+    <view class="info-grid">
+      <view class="grid-item">
+        <text class="label">日期</text>
+        <text class="value">{{postDetail.day_label ? postDetail.day_label + ' · ' + postDetail.date : postDetail.date}}</text>
+      </view>
+      <view class="grid-item">
+        <text class="label">时间</text>
+        <text class="value">{{postDetail.time}}</text>
+      </view>
+      <view class="grid-item">
+        <text class="label">地点</text>
+        <text class="value">{{postDetail.location}}</text>
+      </view>
+      <view class="grid-item">
+        <text class="label">名额</text>
+        <text class="value">{{postDetail.remainText}}</text>
+      </view>
+    </view>
+
+    <view class="note-section" wx:if="{{postDetail.note}}">
+      <view class="note-header">
+        <text class="note-title">发起人的补充说明</text>
+        <text class="note-dot"></text>
+      </view>
+      <view class="note-content">{{postDetail.note}}</view>
+    </view>
+
+    <view class="manage-actions" wx:if="{{isCreator}}">
+      <button class="edit-post-btn" bindtap="onEditPostTap">编辑邀约</button>
+      <button class="delete-post-btn" bindtap="onDeletePostTap">删除帖子</button>
+    </view>
+
+  </view>
+
+  <view class="joiners-card">
+    <view class="joiners-head">
+      <text class="joiners-title">已加入的同学</text>
+      <text class="joiners-count">{{postDetail.joined_users.length}} 人</text>
+    </view>
+
+    <view class="joiners-list" wx:if="{{postDetail.joined_users.length}}">
+      <view
+        class="joiner-item {{isCreator ? 'chat-enabled' : ''}}"
+        wx:for="{{postDetail.joined_users}}"
+        wx:key="id"
+        bindtap="openJoinerChat"
+        data-openid="{{item.openid}}"
+      >
+        <image wx:if="{{item.avatar}}" class="joiner-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+        <view wx:else class="joiner-avatar joiner-avatar-placeholder">{{item.avatarText}}</view>
+        <text class="joiner-name">{{item.nickname}}</text>
+      </view>
+    </view>
+
+    <view class="joiners-empty" wx:else>
+      还没人上车，你可以成为第一个
+    </view>
+  </view>
+
+  <view class="contact-card">
+    <view class="contact-title">联系方式</view>
+    <view wx:if="{{canSeePhone && postDetail.phone}}" class="phone-line">
+      <text class="phone-text">电话：{{postDetail.phone}}</text>
+      <button class="chat-inline-btn" wx:if="{{isJoined && !isCreator}}" bindtap="openCreatorChat">
+        在线聊天
+      </button>
+    </view>
+    <view wx:else class="phone-locked">
+      加入成功后可查看并拨打联系电话
+    </view>
+    <view class="contact-actions" wx:if="{{isJoined && !isCreator}}">
+      <view class="contact-action-row {{canSeePhone ? '' : 'single'}}">
+        <button wx:if="{{canSeePhone}}" class="call-btn" bindtap="callCreator">
+          拨打电话
+        </button>
+        <button class="leave-btn" bindtap="onCancelJoinTap">
+          退出搭子
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <view class="notify-card" wx:if="{{isCreator}}">
+    <view class="notify-title">{{creatorNotifyEnabled ? '新人加入提醒已开启' : '新人加入提醒未开启'}}</view>
+    <view class="notify-text">
+      {{creatorNotifyEnabled ? '下一位同学加入时，微信会提醒你。提醒发出后建议再开启一次。' : '开启后，有同学加入这个帖子时会通过微信提醒你。'}}
+    </view>
+    <button class="notify-open-btn" wx:if="{{!creatorNotifyEnabled}}" bindtap="requestJoinNotifySubscription">
+      开启新人加入提醒
+    </button>
+  </view>
+
+  <view class="bottom-actions" wx:if="{{!isCreator && !isJoined}}">
+    <button
+      class="join-btn {{isFull || isJoined ? 'disabled' : ''}}"
+      bindtap="onJoinTap"
+      disabled="{{isFull || isJoined}}"
+    >
+      {{joinButtonText}}
+    </button>
+  </view>
+</view>

@@ -1,0 +1,27 @@
+/**app.wxss**/
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+} 
+
+button {
+  background: initial;
+}
+
+button:focus{
+  outline: 0;
+}
+
+button::after{
+  border: none;
+}
+
+
+page {
+  background: linear-gradient(180deg, #f4f6ff 0%, #f8fbff 48%, #eef8f5 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}

@@ -1,0 +1,22 @@
+<view class="page-shell">
+  <view class="section-card settings-hero">
+    <view class="section-kicker">其他设置</view>
+    <view class="section-title">{{myMbti}} · {{myTag}}</view>
+  </view>
+
+  <view class="section-card action-card retest-card">
+    <view class="action-title">重新测试搭子画像</view>
+    <button class="danger-btn action-btn" bindtap="retestPersona">重新测试</button>
+  </view>
+
+  <view class="section-card action-card privacy-card">
+    <view class="action-title">隐私说明</view>
+    <button class="ghost-btn action-btn" bindtap="goPrivacy">查看隐私说明</button>
+  </view>
+
+  <view class="section-card about-card">
+    <view class="action-title">关于小民搭子</view>
+    <view class="about-text">“小民搭子”面向中央民族大学同学，用来快速发起学习、吃饭、运动和临时结伴。</view>
+    <view class="about-text">你可以在广场找搭子，在匹配&发布里发起邀约，在“我的”页面管理资料和提醒。</view>
+  </view>
+</view>

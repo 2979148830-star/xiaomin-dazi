@@ -1,0 +1,80 @@
+@import "../common.wxss";
+
+.settings-hero {
+  padding: 34rpx 32rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.72);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 30%),
+    linear-gradient(135deg, #eef4ff 0%, #f4edff 54%, #e9f8f3 100%);
+  box-shadow: 0 16rpx 36rpx rgba(79, 92, 170, 0.12);
+}
+
+.settings-hero .section-kicker {
+  display: inline-flex;
+  align-items: center;
+  padding: 7rpx 16rpx;
+  border-radius: 999rpx;
+  background: #eef0ff;
+  color: #4b55e8;
+  font-weight: 700;
+}
+
+.settings-hero .section-title {
+  margin-top: 14rpx;
+  font-size: 38rpx;
+  font-weight: 800;
+  color: #253044;
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24rpx;
+  padding: 28rpx 30rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.72);
+  background: linear-gradient(135deg, #f0f4ff 0%, #fbf6ff 56%, #eefbf7 100%);
+}
+
+.action-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 30rpx;
+  line-height: 1.35;
+  font-weight: 800;
+  color: #243140;
+}
+
+.action-btn {
+  width: 230rpx;
+  height: 76rpx;
+  padding: 0 24rpx;
+  margin: 0;
+  font-size: 26rpx;
+  flex-shrink: 0;
+}
+
+.retest-card {
+  border-color: rgba(226, 230, 255, 0.9);
+  background: linear-gradient(135deg, #f1f4ff 0%, #faf4ff 100%);
+}
+
+.privacy-card {
+  border-color: rgba(217, 240, 238, 0.9);
+  background: linear-gradient(135deg, #f0f6ff 0%, #edf9f5 100%);
+}
+
+.about-card {
+  padding: 30rpx;
+}
+
+.about-text {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #74808d;
+}
+
+.about-text + .about-text {
+  margin-top: 10rpx;
+}

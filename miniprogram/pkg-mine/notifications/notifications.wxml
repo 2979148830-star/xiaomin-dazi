@@ -1,0 +1,74 @@
+<view class="page-shell">
+  <view class="section-card">
+    <view class="section-kicker">加入提醒</view>
+    <view class="status-row">
+      <view class="status-main">
+        <view class="section-title">{{statusText}}</view>
+        <view class="section-desc">{{statusDesc}}</view>
+      </view>
+      <text class="status-pill {{statusKind}}">{{statusText}}</text>
+    </view>
+    <view class="inline-actions" wx:if="{{templateConfigured}}">
+      <button class="primary-btn compact-btn" bindtap="requestSubscription">
+        {{notifyEnabled ? '重新授权加入提醒' : '开启加入提醒'}}
+      </button>
+      <button class="ghost-btn compact-btn" wx:if="{{notifyEnabled}}" bindtap="resetNotifyStatus">关闭</button>
+    </view>
+  </view>
+
+  <view class="section-card">
+    <view class="section-kicker">聊天提醒</view>
+    <view class="status-row">
+      <view class="status-main">
+        <view class="section-title">{{chatStatusText}}</view>
+        <view class="section-desc">{{chatStatusDesc}}</view>
+      </view>
+      <text class="status-pill {{chatStatusKind}}">{{chatStatusText}}</text>
+    </view>
+    <view class="inline-actions" wx:if="{{chatTemplateConfigured}}">
+      <button class="primary-btn compact-btn" bindtap="requestChatSubscription">
+        {{chatNotifyEnabled ? '重新授权聊天提醒' : '开启聊天提醒'}}
+      </button>
+      <button class="ghost-btn compact-btn" wx:if="{{chatNotifyEnabled}}" bindtap="resetChatNotifyStatus">关闭</button>
+    </view>
+  </view>
+
+  <view class="section-card" wx:if="{{templateConfigured || chatTemplateConfigured}}">
+    <view class="guide-title">使用方式</view>
+    <view class="guide-line">1. 先开启需要的提醒类型。</view>
+    <view class="guide-line">2. 有同学加入或有人给你发聊天消息时，微信会发订阅提醒。</view>
+    <view class="guide-line">3. 订阅提醒发出后会自动恢复成“待开启”，下次需要再授权一次。</view>
+  </view>
+
+  <view class="section-card warning-card" wx:if="{{!templateConfigured && !chatTemplateConfigured}}">
+    <view class="guide-title">当前还不能开启</view>
+    <view class="section-desc">需要管理员先配置好订阅模板，开启按钮才会正常工作。</view>
+  </view>
+
+  <view class="section-card">
+    <view class="notice-head">
+      <view>
+        <view class="guide-title">站内消息</view>
+        <view class="section-desc">帖子删除、聊天消息会显示在这里。</view>
+      </view>
+      <text class="notice-count" wx:if="{{unreadCount}}">{{unreadCount}} 未读</text>
+    </view>
+
+    <view class="notice-empty" wx:if="{{!notifications.length}}">暂无站内消息</view>
+    <view
+      class="notice-item {{item.read ? '' : 'unread'}}"
+      wx:for="{{notifications}}"
+      wx:key="_id"
+      bindtap="openNotification"
+      data-index="{{index}}"
+    >
+      <view class="notice-title-row">
+        <text class="notice-title">{{item.title}}</text>
+        <text class="notice-time">{{item.timeText}}</text>
+      </view>
+      <view class="notice-content">{{item.content}}</view>
+    </view>
+  </view>
+
+  <button class="ghost-btn action-gap" bindtap="refreshStatus">刷新状态</button>
+</view>

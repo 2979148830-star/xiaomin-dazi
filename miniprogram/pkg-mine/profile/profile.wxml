@@ -1,0 +1,73 @@
+<view class="page-shell">
+  <view class="section-card">
+    <view class="profile-hero-top">
+      <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <view class="avatar-stage">
+          <image wx:if="{{form.avatar}}" class="profile-avatar" src="{{form.avatar}}" mode="aspectFit"></image>
+          <view wx:else class="profile-avatar profile-avatar-placeholder">{{form.avatarText}}</view>
+        </view>
+        <view class="avatar-mask">换头像</view>
+      </button>
+
+      <view class="profile-hero-main">
+        <view class="section-kicker">个人信息</view>
+        <view class="profile-title">{{form.nickname || '先设置一个昵称吧'}}</view>
+        <view class="profile-subtitle">
+          {{profileReady ? '资料已经可以正常用于发布和加入搭子。' : '建议先补齐昵称和性别，方便别人认识你。'}}
+        </view>
+      </view>
+    </view>
+
+    <view class="persona-strip">
+      <text class="persona-pill strong">{{myMbti}}</text>
+      <text class="persona-pill">{{myTag}}</text>
+    </view>
+  </view>
+
+  <view class="section-card">
+    <view class="field-label">昵称</view>
+    <input
+      class="field-input"
+      type="nickname"
+      maxlength="20"
+      value="{{form.nickname}}"
+      placeholder="填写你希望展示的昵称"
+      bindinput="onNicknameInput"
+    />
+
+    <view class="divider"></view>
+
+    <view class="field-label">性别</view>
+    <picker range="{{genderOptions}}" value="{{genderIndex}}" bindchange="onGenderChange">
+      <view class="field-picker {{genderIndex > -1 ? 'selected' : ''}}">
+        {{genderIndex > -1 ? genderOptions[genderIndex] : '选择展示的性别'}}
+      </view>
+    </picker>
+
+    <view class="divider"></view>
+
+    <view class="field-label">爱好</view>
+    <input
+      class="field-input"
+      maxlength="40"
+      value="{{form.hobbies}}"
+      placeholder="比如：绘画、篮球、电影、citywalk"
+      bindinput="onHobbiesInput"
+    />
+    <view class="hobby-helper">
+      <view class="hobby-helper-title">{{hobbyTags.length ? '会展示成这些小标签' : '用顿号、逗号或空格分开，展示会更清爽'}}</view>
+      <view class="hobby-preview" wx:if="{{hobbyTags.length}}">
+        <text class="hobby-preview-chip" wx:for="{{hobbyTags}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-card tip-card">
+    <view class="tip-title">搭子画像</view>
+    <view class="tip-desc">{{myTag}}</view>
+    <view class="tip-note">想重新测试你的搭子画像，可以去“其他设置”里再测一遍。</view>
+    <button class="ghost-btn" bindtap="goSettings">去其他设置</button>
+  </view>
+
+  <button class="primary-btn save-btn" bindtap="saveProfile" loading="{{saving}}">保存个人信息</button>
+</view>

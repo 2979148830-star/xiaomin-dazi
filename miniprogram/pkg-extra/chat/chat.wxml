@@ -1,0 +1,47 @@
+<view class="chat-page">
+  <view class="chat-hero" wx:if="{{conversation}}">
+    <view class="chat-title">和 {{conversation.peer_name || '同学'}} 聊天</view>
+    <view class="chat-desc">关于「{{conversation.post_title || '校园邀约'}}」</view>
+    <view class="deleted-tip" wx:if="{{conversation.post_deleted}}">原帖已删除，聊天记录仍可查看</view>
+  </view>
+
+  <scroll-view class="message-list" scroll-y scroll-into-view="{{lastMessageViewId}}">
+    <view class="empty-chat" wx:if="{{!messages.length && !loading}}">还没有消息，打个招呼吧</view>
+    <view
+      id="{{item.viewId}}"
+      class="message-row {{item.isMine ? 'mine' : 'peer'}}"
+      wx:for="{{messages}}"
+      wx:key="_id"
+    >
+      <view class="message-avatar-wrap" wx:if="{{!item.isMine}}">
+        <image wx:if="{{item.sender_avatar}}" class="message-avatar" src="{{item.sender_avatar}}" mode="aspectFill"></image>
+        <view wx:else class="message-avatar placeholder">{{item.avatarText}}</view>
+      </view>
+
+      <view class="message-main">
+        <view class="message-name">{{item.sender_display_name}}</view>
+        <view class="message-bubble">
+          <text>{{item.content}}</text>
+        </view>
+        <text class="message-time">{{item.timeText}}</text>
+      </view>
+
+      <view class="message-avatar-wrap" wx:if="{{item.isMine}}">
+        <image wx:if="{{item.sender_avatar}}" class="message-avatar" src="{{item.sender_avatar}}" mode="aspectFill"></image>
+        <view wx:else class="message-avatar placeholder">{{item.avatarText}}</view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="input-bar">
+    <input
+      class="message-input"
+      value="{{inputText}}"
+      placeholder="输入聊天内容"
+      confirm-type="send"
+      bindinput="onInput"
+      bindconfirm="sendMessage"
+    />
+    <button class="send-btn" bindtap="sendMessage" loading="{{sending}}">发送</button>
+  </view>
+</view>

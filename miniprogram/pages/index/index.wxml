@@ -1,0 +1,185 @@
+<view class="page-container">
+  <view class="header-section">
+    <view class="welcome-box">
+      <view class="title">小民广场</view>
+    </view>
+
+    <view class="stats-bar">
+      <view class="stat-item">
+        <text class="num">{{stats.todayCount}}</text>
+        <text class="label">今日邀约</text>
+      </view>
+      <view class="stat-item">
+        <text class="num">{{stats.tomorrowCount}}</text>
+        <text class="label">明日邀约</text>
+      </view>
+      <view class="stat-item">
+        <text class="num">{{stats.futureCount}}</text>
+        <text class="label">以后邀约</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="filters-shell">
+    <view class="time-filter-bar">
+      <view
+        class="time-filter-item {{currentTimeFilter === item.key ? 'active' : ''}}"
+        wx:for="{{timeFilterTabs}}"
+        wx:key="key"
+        bindtap="switchTimeFilter"
+        data-time-key="{{item.key}}"
+      >
+        <text class="time-filter-label">{{item.label}}</text>
+        <text class="time-filter-count">{{item.count}} 条</text>
+      </view>
+    </view>
+
+    <scroll-view class="filter-tabs" scroll-x enable-flex>
+      <view
+        class="tab-item {{currentTab === item ? 'active' : ''}}"
+        wx:for="{{tabs}}"
+        wx:key="*this"
+        bindtap="switchTab"
+        data-tab="{{item}}"
+      >
+        {{item}}
+      </view>
+    </scroll-view>
+  </view>
+
+  <view class="list-section">
+    <view class="section-header">
+      <view class="section-title-wrap">
+        <text class="section-title">校园邀约</text>
+        <text class="refresh-tip">下滑可以刷新广场</text>
+      </view>
+      <text class="section-subtitle">当前 {{totalFilteredCount}} 条 · 招募中 {{openFilteredCount}} 条</text>
+    </view>
+
+    <view class="skeleton-list" wx:if="{{loadingPosts}}">
+      <view class="skeleton-card" wx:for="{{[1, 2, 3]}}" wx:key="*this">
+        <view class="skeleton-line title"></view>
+        <view class="skeleton-line short"></view>
+        <view class="skeleton-grid">
+          <view class="skeleton-line"></view>
+          <view class="skeleton-line"></view>
+          <view class="skeleton-line"></view>
+          <view class="skeleton-line"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-state error-state" wx:elif="{{loadError}}">
+      <text class="empty-text">{{loadErrorText}}</text>
+      <button class="retry-btn" bindtap="retryLoad">重新加载</button>
+    </view>
+
+    <view class="empty-state" wx:elif="{{totalFilteredCount === 0}}">
+      <text class="empty-text">{{emptyStateText}}</text>
+    </view>
+
+    <block wx:else>
+      <view class="time-group" wx:for="{{groupedPostSections}}" wx:key="key">
+        <view class="time-group-header">
+          <view class="time-group-title-wrap">
+            <text class="time-group-title">{{item.label}}</text>
+            <text class="time-group-hint">{{item.hint}}</text>
+          </view>
+          <text class="time-group-count">{{item.count}} 条</text>
+        </view>
+
+        <view
+          class="post-card"
+          wx:for="{{item.posts}}"
+          wx:for-item="post"
+          wx:key="_id"
+          bindtap="goToDetail"
+          data-id="{{post._id}}"
+        >
+          <view class="card-body">
+            <view class="title-row">
+              <view class="activity-title-wrap">
+                <text class="activity-type">{{post.type}}</text>
+                <view class="requirement-chip title-requirement-chip">
+                  <text class="req-inline-label">招募</text>
+                  <text class="req-inline-value">{{post.gender}}</text>
+                </view>
+              </view>
+              <view class="title-badges">
+                <text class="category-tag" wx:if="{{post.category === '其他'}}">其他</text>
+                <text class="status-badge {{post.statusClass}}">{{post.statusText}}</text>
+              </view>
+            </view>
+
+            <view class="creator-row">
+              <view class="creator-main">
+                <view class="creator-line">
+                  <text class="creator-name">{{post.creator_name || '民大同学'}}</text>
+                  <view class="tag-persona" wx:if="{{post.creator_tag}}">
+                    {{post.creator_tag}}
+                  </view>
+                </view>
+              </view>
+              <view class="user-tags-container">
+                <view class="tag-gender {{post.creator_gender === '男生' ? 'male' : (post.creator_gender === '女生' ? 'female' : 'secret')}}">
+                  <text>{{post.creator_gender}}</text>
+                </view>
+                
+                <view
+                  class="tag-hobbies"
+                  wx:for="{{post.creatorHobbyTags}}"
+                  wx:for-item="hobby"
+                  wx:key="*this"
+                >
+                  {{hobby}}
+                </view>
+              </view>
+            </view>
+
+            <view class="answer-tags" wx:if="{{post.answerTagsPreview.length}}">
+              <text class="answer-tag" wx:for="{{post.answerTagsPreview}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+              <text class="answer-tag more" wx:if="{{post.answerTagsOverflowCount > 0}}">+{{post.answerTagsOverflowCount}}</text>
+            </view>
+
+            <view class="info-grid">
+              <view class="info-item">
+                <view class="info-icon icon-calendar"></view>
+                <view class="info-main">
+                  <text class="info-label">日期</text>
+                  <text class="info-value">{{post.day_label ? post.day_label + ' · ' + post.date : post.date}}</text>
+                </view>
+              </view>
+              <view class="info-item">
+                <view class="info-icon icon-clock"></view>
+                <view class="info-main">
+                  <text class="info-label">时间</text>
+                  <text class="info-value">{{post.time}}</text>
+                </view>
+              </view>
+              <view class="info-item">
+                <view class="info-icon icon-place"></view>
+                <view class="info-main">
+                  <text class="info-label">地点</text>
+                  <text class="info-value">{{post.location}}</text>
+                </view>
+              </view>
+              <view class="info-item">
+                <view class="info-icon icon-people"></view>
+                <view class="info-main">
+                  <text class="info-label">名额</text>
+                  <text class="info-value">{{post.remainText}}</text>
+                </view>
+              </view>
+            </view>
+
+            <view class="note-box" wx:if="{{post.note}}">
+              <text class="note-text">{{post.note}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="footer-hint" wx:if="{{totalFilteredCount > 0}}">已经看到当前可见的全部邀约啦</view>
+</view>
